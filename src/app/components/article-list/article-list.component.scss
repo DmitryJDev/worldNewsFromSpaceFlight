@@ -1,0 +1,236 @@
+ 
+$primary-color: #1976d2;
+$secondary-color: #424242;
+$background-color: #f5f5f5;
+$text-color: #333333;
+$card-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+$card-shadow-hover: 0 4px 8px rgba(0, 0, 0, 0.15);
+$border-radius: 8px;
+$transition: all 0.3s ease;
+
+ 
+@mixin card-hover {
+  transition: $transition;
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: $card-shadow-hover;
+  }
+}
+
+@mixin flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+ 
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: $background-color;
+  min-height: 100vh;
+}
+
+ 
+.search-section {
+  margin-bottom: 30px;
+  text-align: center;
+  
+  .search-label {
+    display: block;
+    color: $secondary-color;
+    font-size: 1rem;
+    font-weight: 500;
+    margin-bottom: 8px;
+    text-align: left;
+    max-width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  
+  .search-input-container {
+    position: relative;
+    max-width: 500px;
+    margin: 0 auto;
+    
+    .search-input {
+      width: 100%;
+      padding: 12px 16px 12px 40px;
+      border: 1px solid #e0e0e0;
+      border-radius: $border-radius;
+      font-size: 1rem;
+      color: $text-color;
+      background-color: white;
+      outline: none;
+      transition: $transition;
+      
+      &:focus {
+        border-color: $primary-color;
+        box-shadow: 0 0 0 2px rgba($primary-color, 0.1);
+      }
+      
+      &::placeholder {
+        color: #999;
+      }
+    }
+    
+    .search-icon {
+      position: absolute;
+      left: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: $secondary-color;
+      font-size: 16px;
+      pointer-events: none;
+      user-select: none;
+    }
+  }
+}
+
+ 
+.results-info {
+  text-align: center;
+  margin-bottom: 20px;
+  color: $secondary-color;
+  font-size: 1.1rem;
+  font-weight: 500;
+}
+
+ 
+.loading-container {
+  @include flex-center;
+  flex-direction: column;
+  padding: 60px 20px;
+  
+  p {
+    margin-top: 20px;
+    color: $secondary-color;
+    font-size: 1.1rem;
+  }
+}
+
+ 
+.no-results {
+  @include flex-center;
+  padding: 60px 20px;
+  
+  mat-card {
+    text-align: center;
+    max-width: 400px;
+    
+    h2 {
+      color: $secondary-color;
+      margin-bottom: 10px;
+    }
+    
+    p {
+      color: #666;
+      margin: 0;
+    }
+  }
+}
+
+ 
+.article-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: 24px;
+  margin-top: 20px;
+}
+
+ 
+.article-card {
+  @include card-hover;
+  border-radius: $border-radius;
+  overflow: hidden;
+  cursor: pointer;
+  background: white;
+  
+  .article-image {
+    height: 200px;
+    object-fit: cover;
+    width: 100%;
+  }
+  
+  .article-date {
+    font-size: 0.9rem;
+    color: #666;
+    margin-bottom: 12px;
+    font-weight: 500;
+    text-transform: capitalize;
+  }
+  
+  mat-card-title {
+    font-size: 1.3rem;
+    line-height: 1.4;
+    margin-bottom: 12px;
+    color: $secondary-color;
+    font-weight: 600;
+  }
+  
+  .article-summary {
+    color: #666;
+    line-height: 1.5;
+    margin-bottom: 20px;
+    display: -webkit-box;
+     
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    font-size: 0.95rem;
+  }
+  
+  .read-more-btn {
+    padding: 0;
+    font-weight: 500;
+    text-transform: none;
+    color: $primary-color;
+    
+    &:hover {
+      background: none;
+      text-decoration: underline;
+    }
+  }
+}
+
+ 
+::ng-deep .highlight {
+  background-color: #ffeb3b;
+  padding: 2px 4px;
+  border-radius: 3px;
+  font-weight: bold;
+}
+
+ 
+@media (max-width: 768px) {
+  .container {
+    padding: 15px;
+  }
+  
+  .search-section {
+    .search-input-container {
+      max-width: 100%;
+    }
+  }
+  
+  .article-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  
+  .article-card {
+    mat-card-title {
+      font-size: 1.1rem;
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .container {
+    padding: 10px;
+  }
+  
+  .article-grid {
+    gap: 12px;
+  }
+}
