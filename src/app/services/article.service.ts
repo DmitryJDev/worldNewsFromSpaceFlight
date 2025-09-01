@@ -3,11 +3,6 @@ import { HttpClient } from '@angular/common/http';
 import {
   Observable,
   map,
-  catchError,
-  of,
-  BehaviorSubject,
-  debounceTime,
-  switchMap,
 } from 'rxjs';
 import { Article, ApiResponse } from '../interfaces/article';
 
@@ -21,7 +16,7 @@ export class ArticleService {
   public articles = signal<Article[]>([]);
   public loading = signal<boolean>(false);
   public query = signal<string>('');
-  private searchTerms = new BehaviorSubject<string>('');
+
   constructor() {
     this.loadInitialArticles();
   }
