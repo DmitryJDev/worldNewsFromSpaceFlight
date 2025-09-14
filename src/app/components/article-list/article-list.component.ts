@@ -36,7 +36,7 @@ import { debounceTime } from 'rxjs/operators';
       </div>
 
       @if(articleService.articles().length > 0){
-      <div class="results-info">
+      <div class="results-info cursor-progress">
         Results: {{ articleService.articles().length }}
       </div>
       }
@@ -84,7 +84,7 @@ import { debounceTime } from 'rxjs/operators';
                 )
               "
             ></p>
-            <button mat-button class="read-more-btn  font-bold">Read more</button>
+            <button mat-button class="read-more-btn   font-bold">  Read more</button>
           </mat-card-content>
         </mat-card>
         }
