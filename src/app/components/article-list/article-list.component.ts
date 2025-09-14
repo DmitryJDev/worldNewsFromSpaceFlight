@@ -23,9 +23,9 @@ import { debounceTime } from 'rxjs/operators';
   template: `
     <div class="container">
       <div class="search-section">
-        <label class="search-label">Filter by keywords</label>
+        <label class="truncate text-sm text-gray-500 dark:text-gray-400" >Filter by keywords</label>
         <div class="search-input-container">
-          <span class="search-icon">🔍</span>
+          <span class="search-icon ">🔍</span>
           <input
             type="text"
             class="search-input"
@@ -40,14 +40,14 @@ import { debounceTime } from 'rxjs/operators';
         Results: {{ articleService.articles().length }}
       </div>
       }
-      
+
       @if(articleService.loading()){
       <div class="loading-container">
         <mat-spinner></mat-spinner>
         <p>Loading articles...</p>
       </div>
       }
-      
+
       @if(articleService.query() && articleService.articles().length === 0 &&
       !articleService.loading()){
       <div class="no-results">
@@ -58,8 +58,8 @@ import { debounceTime } from 'rxjs/operators';
           </mat-card-content>
         </mat-card>
       </div>
-      } 
-      
+      }
+
       @if(articleService.articles().length > 0 && !articleService.loading()){
       <div class="article-grid">
         @for( article of articleService.articles(); track article.id){
@@ -84,7 +84,7 @@ import { debounceTime } from 'rxjs/operators';
                 )
               "
             ></p>
-            <button mat-button class="read-more-btn">Read more</button>
+            <button mat-button class="read-more-btn  font-bold">Read more</button>
           </mat-card-content>
         </mat-card>
         }
@@ -95,13 +95,13 @@ import { debounceTime } from 'rxjs/operators';
   styleUrl: './article-list.component.scss',
 })
 export class ArticleListComponent {
- 
+
  public articleService = inject(ArticleService);
  private searchSubject = new Subject<string>();
 
  constructor() {
     this.searchSubject.pipe(
-      debounceTime(1000)  
+      debounceTime(1000)
     ).subscribe((query) => {
       this.articleService.search(query);
     });
@@ -109,7 +109,7 @@ export class ArticleListComponent {
 
   onSearch(event: Event): void {
     const input = event.target as HTMLInputElement;
-    const query = input.value.trim(); 
+    const query = input.value.trim();
     this.searchSubject.next(query);
   }
 
@@ -135,7 +135,7 @@ export class ArticleListComponent {
 
   highlightText(text: string, query: string): string {
     if (!query || !text) return text;
- 
+
     const allKeywords = query.split(' ').filter((word) => word.length > 0);
     const keywords = [...new Set(allKeywords)]; // Remove duplicates
 
