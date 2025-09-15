@@ -1,4 +1,4 @@
-import { Component , inject, ElementRef, AfterViewInit} from '@angular/core';
+import { Component , inject,enableProdMode } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
@@ -8,6 +8,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { ArticleService } from '../../services/article.service';
 import { Subject } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
+
 
 @Component({
   selector: 'app-article-list',
@@ -109,12 +110,12 @@ import { debounceTime } from 'rxjs/operators';
   `,
   styleUrl: './article-list.component.scss',
 })
-export class ArticleListComponent implements AfterViewInit {
+export class ArticleListComponent   {
 
  public articleService = inject(ArticleService);
  private searchSubject = new Subject<string>();
 
- constructor(private el: ElementRef) {
+ constructor( ) {
     this.searchSubject.pipe(
       debounceTime(1000)
     ).subscribe((query) => {
@@ -168,39 +169,6 @@ export class ArticleListComponent implements AfterViewInit {
     return highlightedText;
   }
 
-  ngAfterViewInit() {
-    const elements = this.el.nativeElement.querySelectorAll('.article-grid');
-    console.log('Found elements:', elements.length);
 
-    if (elements.length === 0) {
-      console.error('No elements with class "article-grid" found!');
-      return;
-    }
-
-    const observer = new IntersectionObserver(
-      (entries, observer) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            console.log('Element is visible, adding animate__animated:', entry.target);
-            // Удаляем и добавляем класс для перезапуска анимации
-            entry.target.classList.remove('animate__animated');
-            // void entry.target.offsetWidth; // Триггер reflow
-            entry.target.classList.add('animate__animated');
-            observer.unobserve(entry.target);
-          }
-        });
-      },
-      {
-        // rootMargin: '-50px 0px', // Анимация начинается, когда элемент на 50px выше
-        // threshold: 0.1
-      }
-    );
-
-    elements.forEach((element: Element) => {
-      element.classList.remove('animate__animated');
-      observer.observe(element);
-      console.log('Observing element:', element);
-    });
-  }
 
 }

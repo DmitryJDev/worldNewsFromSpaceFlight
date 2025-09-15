@@ -7,8 +7,20 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="icon" type="image/x-icon" href="favicon.ico">
   <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+  <link rel="stylesheet" href="https://unpkg.com/animate.css@4.1.1/animate.min.css" />
+  
 </head>
 <body>
   <app-root></app-root>
+  <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+  <script>
+    AOS.init({
+      duration: 1000, // Длительность анимации (в мс)
+      delay: 0, // Задержка (в мс)
+      once: true, // Анимация один раз
+      offset: 100 // Смещение (в пикселях)
+    });
+  </script>
 </body>
 </html>
