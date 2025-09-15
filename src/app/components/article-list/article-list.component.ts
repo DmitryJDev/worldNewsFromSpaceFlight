@@ -1,4 +1,4 @@
-import { Component , inject} from '@angular/core';
+import { Component , inject, ElementRef, AfterViewInit} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
@@ -21,14 +21,14 @@ import { debounceTime } from 'rxjs/operators';
     MatButtonModule,
   ],
   template: `
-    <div class="container">
-      <div class="search-section">
-        <label class="truncate text-sm text-gray-500 dark:text-gray-400" >Filter by keywords</label>
-        <div class="search-input-container">
-          <span class="search-icon ">🔍</span>
+    <div class="container ">
+      <div class="search-section animate__animated animate__fadeInLeft">
+        <label class="truncate text-sm text-gray-500 dark:text-gray-400 " >Filter by keywords</label>
+        <div class="search-input-container ">
+          <span class="search-icon  ">🔍</span>
           <input
             type="text"
-            class="search-input"
+            class="search-input "
             (input)="onSearch($event)"
             placeholder="Enter keywords to search articles..."
           />
@@ -36,7 +36,7 @@ import { debounceTime } from 'rxjs/operators';
       </div>
 
       @if(articleService.articles().length > 0){
-      <div class="results-info cursor-progress">
+      <div class="results-info cursor-progress ">
         Results: {{ articleService.articles().length }}
       </div>
       }
@@ -61,7 +61,7 @@ import { debounceTime } from 'rxjs/operators';
       }
 
       @if(articleService.articles().length > 0 && !articleService.loading()){
-      <div class="article-grid">
+      <div class=" animate__animated animate__fadeInUp  " style="animation-delay: 0.3s;">
         @for( article of articleService.articles(); track article.id){
         <mat-card class="article-card" [routerLink]="['/article', article.id]">
           <img
@@ -85,21 +85,36 @@ import { debounceTime } from 'rxjs/operators';
               "
             ></p>
             <button mat-button class="read-more-btn   font-bold">  Read more</button>
+
           </mat-card-content>
         </mat-card>
+
+
         }
       </div>
       }
     </div>
+    <br>
+    <br>
+    <hr>
+    <br>
+    <br>
+
+    <div class="article-grid  animate__fadeInUp animate__delay-3s " style="background-color: #ffeb3b">
+      <h2 >Aaaaaaaaaaä</h2>
+
+    </div>
+   <br>
+    <br>
   `,
   styleUrl: './article-list.component.scss',
 })
-export class ArticleListComponent {
+export class ArticleListComponent implements AfterViewInit {
 
  public articleService = inject(ArticleService);
  private searchSubject = new Subject<string>();
 
- constructor() {
+ constructor(private el: ElementRef) {
     this.searchSubject.pipe(
       debounceTime(1000)
     ).subscribe((query) => {
@@ -152,4 +167,40 @@ export class ArticleListComponent {
 
     return highlightedText;
   }
+
+  ngAfterViewInit() {
+    const elements = this.el.nativeElement.querySelectorAll('.article-grid');
+    console.log('Found elements:', elements.length);
+
+    if (elements.length === 0) {
+      console.error('No elements with class "article-grid" found!');
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      (entries, observer) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            console.log('Element is visible, adding animate__animated:', entry.target);
+            // Удаляем и добавляем класс для перезапуска анимации
+            entry.target.classList.remove('animate__animated');
+            // void entry.target.offsetWidth; // Триггер reflow
+            entry.target.classList.add('animate__animated');
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      {
+        // rootMargin: '-50px 0px', // Анимация начинается, когда элемент на 50px выше
+        // threshold: 0.1
+      }
+    );
+
+    elements.forEach((element: Element) => {
+      element.classList.remove('animate__animated');
+      observer.observe(element);
+      console.log('Observing element:', element);
+    });
+  }
+
 }
